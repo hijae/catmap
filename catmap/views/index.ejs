@@ -7,8 +7,8 @@
 	
 	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-	<link rel="stylesheet" herf="/stylesheets/style.css"/>
+    <link rel="stylesheet" herf="/stylesheets/style.css"/>
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 	<style>
 		.navbar {
   height: 50px;
@@ -41,6 +41,9 @@
 		}).addTo(mymap);
 		var arr = [];
 		var end=0;
+		
+		//여기에서 서버에서 가져오는 부분 만들기
+
 		for (var i = 0; i < 4; i++) {
    			arr[i] = new Array(2);
 		}
@@ -64,8 +67,11 @@
 			arr[end][0]=e.latlng.lat;
 			arr[end][1]=e.latlng.lng;
 			L.marker([arr[end][0],arr[end][1]], {icon: catIcon}).addTo(mymap);
+			
+			//여기에 서버에 업로드 하는 부분 만들기
 		}
 		mymap.on('click', onMapClick);
+
 	</script>
 </body>
 </html>
