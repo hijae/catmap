@@ -1,11 +1,18 @@
 body {
-  padding: 0px;
+  padding: 50px;
   margin: 0px;
-  font: 14px Helvetica, Arial, sans-serif;
-  background-color:peru;
-  color: #FFFFFF;
 }
 
 a {
   color: #00B7FF;
+}
+
+#navbar {
+  height: 50px!important;
+  width: 100%!important;
+  background: #cc9090!important;
+  font-weight: bolder!important;
+  font-size: 25px!important;
+  display: flex!important;
+  align-items: center!important;
 }
