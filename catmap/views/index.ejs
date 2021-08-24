@@ -1,38 +1,70 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>DCU CAT</title>
 	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"">
 	
-	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-    <link rel="stylesheet" herf="/stylesheets/style.css"/>
-	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	<link rel=" shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+		integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+		crossorigin="" />
+	<link rel="stylesheet" herf="/stylesheets/style.css" />
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+		integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+		crossorigin=""></script>
 	<style>
 		.navbar {
-  height: 50px;
-  width: 100%;
-  background: #cc9090;
-  font-weight: bolder;
-  font-size: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+			height: 50px;
+			width: 100%;
+			background: #cc9090;
+			font-weight: bolder;
+			font-size: 25px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 	</style>
 </head>
+
 <body>
 	<div class="navbar">DCU CAT MAP</div>
 	<div id="mapid" style="width: 100%; height: 100vh;"></div>
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+	<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+	<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+
 	<script>
+		// Your web app's Firebase configuration
+		// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+		var firebaseConfig = {
+			apiKey: "AIzaSyCxsKPouaoVNmLqHwx8Bw5RLng3IDqB9lM",
+			authDomain: "dcu-cat.firebaseapp.com",
+			projectId: "dcu-cat",
+			storageBucket: "dcu-cat.appspot.com",
+			messagingSenderId: "613584095229",
+			appId: "1:613584095229:web:8814a8b935d17415fefb94",
+			measurementId: "G-3DTWJ4LM4D"
+		};
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
+		firebase.analytics();
+		var database = firebase.database();
+
+
 		var catIcon = L.icon({
-    		iconUrl: '/images/cat.png',
-    		iconSize:     [30,30], // size of the icon
-    		iconAnchor:   [15,15], // point of the icon which will correspond to marker's location
-    		popupAnchor:  [0,0] // point from which the popup should open relative to the iconAnchor
+			iconUrl: '/images/cat.png',
+			iconSize: [30, 30], // size of the icon
+			iconAnchor: [15, 15], // point of the icon which will correspond to marker's location
+			popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
 		});
-		var mymap = L.map('mapid').setView([35.912,128.806], 17);
+		var mymap = L.map('mapid').setView([35.912, 128.806], 17);
 		L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 			maxZoom: 18,
 			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' + 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>', id: 'mapbox/streets-v11',
@@ -40,38 +72,41 @@
 			zoomOffset: -1
 		}).addTo(mymap);
 		var arr = [];
-		var end=0;
-		
-		//여기에서 서버에서 가져오는 부분 만들기
+		var end = 0;
 
+		//여기에서 서버에서 가져오는 부분 만들기
 		for (var i = 0; i < 4; i++) {
-   			arr[i] = new Array(2);
+			arr[i] = new Array(2);
 		}
-		arr[0][0]=35.912;
-		arr[0][1]=128.806;
-		arr[1][0]=35.911359;
-		arr[1][1]=128.806694;
-		arr[2][0]=35.90827;
-		arr[2][1]=128.81143;
-		arr[3][0]=35.912458;
-		arr[3][1]=128.80484;
-		end=3;
-		for(var i = 0; i <=end; i++)
-		{
-			L.marker([arr[i][0],arr[i][1]],{icon: catIcon}).addTo(mymap);
-		}
+		var dbTestRef = database.ref('loca/')
+		dbTestRef.on('child_added', function (data) {
+			console.log(data.val())
+			console.log(data.val().brdx)
+			L.marker([data.val().brdx, data.val().brdy], { icon: catIcon }).addTo(mymap);
+		})
 		function onMapClick(e) {
-			
-			end+=1;
-			arr[end] = new Array(2);
-			arr[end][0]=e.latlng.lat;
-			arr[end][1]=e.latlng.lng;
-			L.marker([arr[end][0],arr[end][1]], {icon: catIcon}).addTo(mymap);
-			
+
+			x = e.latlng.lat;
+			y = e.latlng.lng;
+			L.marker([x, y], { icon: catIcon }).addTo(mymap);
+
 			//여기에 서버에 업로드 하는 부분 만들기
+			var newPostKey = firebase.database().ref().child('posts').push().key;
+
+			var postData = {
+				brdno: newPostKey,
+				brdx: x,
+				brdy: y,
+				brddate: Date.now()
+			};
+
+			var updates = {};
+			updates['/loca/' + newPostKey] = postData;
+			firebase.database().ref().update(updates);
 		}
 		mymap.on('click', onMapClick);
 
 	</script>
 </body>
+
 </html>
